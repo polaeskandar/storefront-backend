@@ -1,0 +1,74 @@
+## Database Schema
+
+- storefront_backend
+  - users
+    - id INT
+    - name VARCHAR(100)
+    - email VARCHAR(255)
+    - password VARCHAR(100)
+  - products
+    - id INT
+    - name VARCHAR(100)
+    - description TEXT
+    - available_quantity INT
+  - orders -- Many To Many Relationship pivot table
+    - id INT
+    - quantity INT
+    - user_id INT
+    - product_id INT
+
+---
+
+## Endpoints
+
+- `POST /user/signin`
+  - Signs a user in.
+- `POST /user/signup`
+  - Signs a new user up.
+- `GET /users`
+  - Gets all users registered in the database.
+  - Must be authenticated in order to complete this action.
+- `GET /user/:id`
+  - Gets a specific user with id in the database.
+  - Must be authenticated in order to complete this action.
+- `POST /user/create`
+  - Creates a new user in the database.
+  - Must be authenticated in order to complete this action.
+- `PUT /user/:id/update`
+  - Updates an existing user in the database.
+  - Must be authenticated in order to complete this action.
+- `DELETE /user/:id/delete`
+  - Deltes an existing user in the database.
+  - Must be authenticated in order to complete this action.
+- `GET /products`
+  - Gets all products in the database.
+  - Must be authenticated in order to complete this action.
+- `GET /product/:id`
+  - Gets a specific product with id in the database.
+  - Must be authenticated in order to complete this action.
+- `POST /product/create`
+  - Creates a new product in the database.
+  - Must be authenticated in order to complete this action.
+- `PUT /product/:id/update`
+  - Updates an existing product in the database.
+  - Must be authenticated in order to complete this action.
+- `DELETE /product/:id/delete`
+  - Deletes an existing product in the database.
+  - Must be authenticated in order to complete this action.
+- `GET /orders`
+  - Gets all orders in the database.
+  - Must be authenticated in order to complete this action.
+- `GET /order/:id`
+  - Gets a specific order with id in the database.
+  - Must be authenticated in order to complete this action.
+- `POST /order/create`
+  - Creates a new order in the database.
+  - Must be authenticated in order to complete this action.
+- `PUT /order/:id/update`
+  - Updates an existing order in the database.
+  - Must be authenticated in order to complete this action.
+- `DELETE /order/:id/delete`
+  - Deletes an existing order in the database.
+  - Must be authenticated in order to complete this action.
+
+---

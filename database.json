@@ -1,0 +1,31 @@
+{
+  "test": {
+    "driver": { "ENV": "TESTING_DATABASE_DRIVER" },
+    "user": { "ENV": "TESTING_DATABASE_USERNAME" },
+    "password": { "ENV": "TESTING_DATABASE_PASSWORD" },
+    "database": { "ENV": "TESTING_DATABASE_DATABASE_NAME" },
+    "host": { "ENV": "TESTING_DATABASE_HOST" },
+    "port": { "ENV": "TESTING_DATABASE_PORT" },
+    "schema": { "ENV": "TESTING_DATABASE_SCHEMA" }
+  },
+
+  "dev": {
+    "driver": { "ENV": "DATABASE_DRIVER" },
+    "user": { "ENV": "DATABASE_USERNAME" },
+    "password": { "ENV": "DATABASE_PASSWORD" },
+    "database": { "ENV": "DATABASE_NAME" },
+    "host": { "ENV": "DATABASE_HOST" },
+    "port": { "ENV": "DATABASE_PORT" },
+    "schema": { "ENV": "DATABASE_SCHEMA" }
+  },
+
+  "prod": {
+    "driver": { "ENV": "DATABASE_DRIVER" },
+    "user": { "ENV": "DATABASE_USERNAME" },
+    "password": { "ENV": "DATABASE_PASSWORD" },
+    "database": { "ENV": "DATABASE_NAME" },
+    "host": { "ENV": "DATABASE_HOST" },
+    "port": { "ENV": "DATABASE_PORT" },
+    "schema": { "ENV": "DATABASE_SCHEMA" }
+  }
+}
