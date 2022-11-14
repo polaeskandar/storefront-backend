@@ -14,7 +14,7 @@ class Product {
   async all(): Promise<ProductType[] | undefined> {
     try {
       const conn = await client.connect();
-      const result = await conn.query("SELECT id, name, description, available_quantity FROM products ORDER BY id DESC;");
+      const result = await conn.query("SELECT id, name, description FROM products ORDER BY id DESC;");
       conn.release();
       return result.rows;
     } catch (error) {
@@ -35,7 +35,7 @@ class Product {
   async find(id: string): Promise<ProductType | undefined> {
     try {
       const conn = await client.connect();
-      const result = await (await client.query("SELECT name, description, available_quantity FROM products WHERE id = $1;", [id])).rows[0];
+      const result = await (await client.query("SELECT name, description FROM products WHERE id = $1;", [id])).rows[0];
       conn.release();
       return result;
     } catch (error) {
@@ -56,11 +56,10 @@ class Product {
   async create(product: ProductType): Promise<ProductType | undefined> {
     const name: string | undefined = product.name;
     const description: string | undefined = product.description;
-    const availableQuantity: string | undefined = product.available_quantity;
 
     try {
       const conn = await client.connect();
-      const result = await (await client.query("INSERT INTO products (name, description, available_quantity) VALUES ($1, $2, $3) RETURNING *;", [name, description, availableQuantity])).rows[0];
+      const result = await (await client.query("INSERT INTO products (name, description) VALUES ($1, $2, $3) RETURNING *;", [name, description])).rows[0];
       conn.release();
       return result;
     } catch (error) {
@@ -84,14 +83,7 @@ class Product {
       const productCheck = await (await client.query("SELECT * FROM products WHERE id = $1;", [product.id])).rowCount;
       if (!productCheck) throw new Error("Product not found");
 
-      const result = await (
-        await client.query("UPDATE products SET name = $1, description = $2, available_quantity = $3 WHERE id = $4 RETURNING *;", [
-          product.name,
-          product.description,
-          product.available_quantity,
-          product.id,
-        ])
-      ).rows[0];
+      const result = await (await client.query("UPDATE products SET name = $1, description = $2 WHERE id = $3 RETURNING *;", [product.name, product.description, product.id])).rows[0];
 
       conn.release();
       return result;

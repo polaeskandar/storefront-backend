@@ -68,15 +68,14 @@ export const createProduct = async (req: Request, res: Response): Promise<void> 
   const body = req.body;
   const name: string | undefined = body.name;
   const description: string | undefined = body.description;
-  const available_quantity: string | undefined = body.available_quantity;
 
-  if (typeof name === "undefined" || typeof description === "undefined" || typeof available_quantity === "undefined") {
+  if (typeof name === "undefined" || typeof description === "undefined") {
     res.status(400).send("Please provide full credentials.");
     return;
   }
 
   try {
-    const product: ProductType | undefined = await productModel.create({ name, description, available_quantity });
+    const product: ProductType | undefined = await productModel.create({ name, description });
     res.status(201).send(product);
   } catch (error) {
     console.error(error);
@@ -100,15 +99,14 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
   const id: string | undefined = req.params.id;
   const name: string | undefined = body.name;
   const description: string | undefined = body.description;
-  const available_quantity: string | undefined = body.available_quantity;
 
-  if (typeof name === "undefined" || typeof description === "undefined" || typeof available_quantity === "undefined") {
+  if (typeof name === "undefined" || typeof description === "undefined") {
     res.status(400).send("Please provide full credentials.");
     return;
   }
 
   try {
-    const product: ProductType | undefined = await productModel.update({ id, name, description, available_quantity });
+    const product: ProductType | undefined = await productModel.update({ id, name, description });
     res.status(201).send(product);
   } catch (error) {
     console.error(error);

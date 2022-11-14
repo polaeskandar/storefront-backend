@@ -1,15 +1,15 @@
 CREATE TABLE products (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
-  description TEXT DEFAULT NULL,
-  available_quantity INT DEFAULT 0
+  price INT DEFAULT 0,
+  description TEXT DEFAULT NULL
 );
 
 INSERT INTO 
-  products (name, description, available_quantity) 
+  products (name, price, description) 
 VALUES
-  ('Macbook Pro', 'A laptop', 10),
-  ('Notebook', 'A notebook', 20),
-  ('Pencil', 'A pencil', 15),
-  ('Gaming PC', 'A gaming PC', 30),
-  ('iPhone 14 plus', 'An iPhone', 50);
+  ('Macbook Pro', 4000, 'A laptop'),
+  ('Notebook', 20, 'A notebook'),
+  ('Pencil', 2, 'A pencil'),
+  ('Gaming PC', 5000, 'A gaming PC'),
+  ('iPhone 14 plus', 2000, 'An iPhone');

@@ -53,88 +53,88 @@ export const getOrder = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-/**
- *
- * Creates a new order in the database.
- *
- * @param req - The request object.
- * @param res - The response object.
- * @returns A promise of void.
- * @author Pola Eskandar.
- * @version v1.0.0
- * @since v1.0.0
- */
-export const createOrder = async (req: Request, res: Response): Promise<void> => {
-  const body = req.body;
-  const quantity: string | undefined = body.quantity;
-  const user_id: string | undefined = body.user_id;
-  const product_id: string | undefined = body.product_id;
+// /**
+//  *
+//  * Creates a new order in the database.
+//  *
+//  * @param req - The request object.
+//  * @param res - The response object.
+//  * @returns A promise of void.
+//  * @author Pola Eskandar.
+//  * @version v1.0.0
+//  * @since v1.0.0
+//  */
+// export const createOrder = async (req: Request, res: Response): Promise<void> => {
+//   const body = req.body;
+//   const quantity: string | undefined = body.quantity;
+//   const user_id: string | undefined = body.user_id;
+//   const product_id: string | undefined = body.product_id;
 
-  if (typeof quantity === "undefined" || typeof user_id === "undefined" || typeof product_id === "undefined") {
-    res.status(400).send("Please provide full credentials.");
-    return;
-  }
+//   if (typeof quantity === "undefined" || typeof user_id === "undefined" || typeof product_id === "undefined") {
+//     res.status(400).send("Please provide full credentials.");
+//     return;
+//   }
 
-  try {
-    const order: OrderType | undefined = await orderModel.create({ quantity, user_id, product_id });
-    res.status(201).send(order);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Something went wrong! please try again...");
-  }
-};
+//   try {
+//     const order: OrderType | undefined = await orderModel.create({ quantity, user_id, product_id });
+//     res.status(201).send(order);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send("Something went wrong! please try again...");
+//   }
+// };
 
-/**
- *
- * Updates an existing order in the database.
- *
- * @param req - The request object.
- * @param res - The response object.
- * @returns A promise of void.
- * @author Pola Eskandar.
- * @version v1.0.0
- * @since v1.0.0
- */
-export const updateOrder = async (req: Request, res: Response): Promise<void> => {
-  const body = req.body;
-  const id: string | undefined = req.params.id;
-  const quantity: string | undefined = body.quantity;
-  const user_id: string | undefined = body.user_id;
-  const product_id: string | undefined = body.product_id;
+// /**
+//  *
+//  * Updates an existing order in the database.
+//  *
+//  * @param req - The request object.
+//  * @param res - The response object.
+//  * @returns A promise of void.
+//  * @author Pola Eskandar.
+//  * @version v1.0.0
+//  * @since v1.0.0
+//  */
+// export const updateOrder = async (req: Request, res: Response): Promise<void> => {
+//   const body = req.body;
+//   const id: string | undefined = req.params.id;
+//   const quantity: string | undefined = body.quantity;
+//   const user_id: string | undefined = body.user_id;
+//   const product_id: string | undefined = body.product_id;
 
-  if (typeof id === "undefined" || typeof quantity === "undefined" || typeof user_id === "undefined" || typeof product_id === "undefined") {
-    res.status(400).send("Please provide full credentials.");
-    return;
-  }
+//   if (typeof id === "undefined" || typeof quantity === "undefined" || typeof user_id === "undefined" || typeof product_id === "undefined") {
+//     res.status(400).send("Please provide full credentials.");
+//     return;
+//   }
 
-  try {
-    const order: OrderType | undefined = await orderModel.update({ id, quantity, user_id, product_id });
-    res.status(201).send(order);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Something went wrong! please try again...");
-  }
-};
+//   try {
+//     const order: OrderType | undefined = await orderModel.update({ id, quantity, user_id, product_id });
+//     res.status(201).send(order);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send("Something went wrong! please try again...");
+//   }
+// };
 
-/**
- *
- * Deletes an existing order in the database.
- *
- * @param req - The request object.
- * @param res - The response object.
- * @returns A promise of void.
- * @author Pola Eskandar.
- * @version v1.0.0
- * @since v1.0.0
- */
-export const deleteOrder = async (req: Request, res: Response): Promise<void> => {
-  const id: string | undefined = req.params.id;
+// /**
+//  *
+//  * Deletes an existing order in the database.
+//  *
+//  * @param req - The request object.
+//  * @param res - The response object.
+//  * @returns A promise of void.
+//  * @author Pola Eskandar.
+//  * @version v1.0.0
+//  * @since v1.0.0
+//  */
+// export const deleteOrder = async (req: Request, res: Response): Promise<void> => {
+//   const id: string | undefined = req.params.id;
 
-  try {
-    await orderModel.delete(id);
-    res.status(200).send("Order deleted successfully!");
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Something went wrong! please try again...");
-  }
-};
+//   try {
+//     await orderModel.delete(id);
+//     res.status(200).send("Order deleted successfully!");
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send("Something went wrong! please try again...");
+//   }
+// };

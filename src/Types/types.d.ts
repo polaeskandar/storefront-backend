@@ -9,19 +9,14 @@ export declare type ProductType = {
   id?: string;
   name?: string;
   description?: string;
-  available_quantity?: string;
+  price_per_unit?: number;
+  order_quantity?: string;
+  total_price?: number;
 };
 
 export declare type OrderType = {
   id?: string;
-  quantity?: string;
+  price?: number;
   user: UserType;
-  product: ProductType;
-};
-
-export declare type SimplifiedOrderType = {
-  id?: string;
-  quantity?: string;
-  user_id: string;
-  product_id: string;
+  products: ProductType[] | undefined;
 };

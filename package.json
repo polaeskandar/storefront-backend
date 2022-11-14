@@ -6,9 +6,9 @@
   "scripts": {
     "start": "tsc && db-migrate up --config database.json --env prod && node ./dist/server.js",
     "test": "tsc && db-migrate up --config database.json --env test && jasmine && db-migrate reset --config database.json --env test",
+    "dev": "nodemon ./src/server.ts",
     "up": "db-migrate up --config database.json",
-    "down": "db-migrate reset --config database.json",
-    "dev": "nodemon ./src/server.ts"
+    "down": "db-migrate reset --config database.json"
   },
   "author": "Pola Eskandar",
   "license": "ISC",
