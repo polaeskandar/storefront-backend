@@ -21,7 +21,7 @@ export const getAllUsers = async (_req: Request, res: Response): Promise<void> =
     res.status(200).send(users);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Something went wrong! please try again...");
+    if (error instanceof Error) res.status(500).send(error.message);
   }
 };
 
@@ -80,7 +80,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     res.status(201).send(user);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Something went wrong! please try again...");
+    if (error instanceof Error) res.status(500).send(error.message);
   }
 };
 
@@ -112,7 +112,7 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
     res.status(201).send(user);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Something went wrong! please try again...");
+    if (error instanceof Error) res.status(500).send(error.message);
   }
 };
 

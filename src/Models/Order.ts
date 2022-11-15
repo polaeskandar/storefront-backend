@@ -1,5 +1,5 @@
 import client from "../connection";
-import { OrderType, ProductType } from "../Types/types";
+import { OrderType, ProductType, UserType } from "../Types/types";
 
 class Order {
   /**
@@ -65,18 +65,18 @@ class Order {
       const conn = await client.connect();
       const orderProducts = await conn.query(
         `
-        SELECT
-          order_product.quantity as quantity,
-          products.id as product_id,
-          products.name as product_name,
-          products.price as product_price,
-          products.description as product_description
-        FROM
-          order_product
-        INNER JOIN products ON products.id = order_product.product_id
-        WHERE
-          order_product.order_id = $1
-      `,
+          SELECT
+            order_product.quantity as quantity,
+            products.id as product_id,
+            products.name as product_name,
+            products.price as product_price,
+            products.description as product_description
+          FROM
+            order_product
+          INNER JOIN products ON products.id = order_product.product_id
+          WHERE
+            order_product.order_id = $1;
+        `,
         [orderId]
       );
 
@@ -124,9 +124,10 @@ class Order {
    * @version v1.0.0
    * @since v1.0.0
    */
-  async find(id: string): Promise<OrderType | undefined> {
+  async find(id: string | undefined): Promise<OrderType | undefined> {
     try {
       const conn = await client.connect();
+
       const orderQuery = await conn.query(
         `
           SELECT
@@ -141,6 +142,10 @@ class Order {
         `,
         [id]
       );
+
+      if (!orderQuery.rowCount) {
+        throw new Error("Order not found!");
+      }
 
       const products: ProductType[] | undefined = await this.getProductsForOrder(orderQuery.rows[0].order_id);
 
@@ -158,105 +163,125 @@ class Order {
     }
   }
 
-  // /**
-  //  *
-  //  * Create a new order row in the table.
-  //  *
-  //  * @param order
-  //  * @returns A promise of ProductType or undefined.
-  //  * @author Pola Eskandar.
-  //  * @version v1.0.0
-  //  * @since v1.0.0
-  //  */
-  // async create(order: SimplifiedOrderType): Promise<OrderType | undefined> {
-  //   const quantity: string | undefined = order.quantity;
-  //   const user_id: string | undefined = order.user_id;
-  //   const product_id: string | undefined = order.product_id;
+  /**
+   *
+   * Create a new order in the database.
+   *
+   * @param order
+   * @returns A promise of ProductType or undefined.
+   * @author Pola Eskandar.
+   * @version v1.0.0
+   * @since v1.0.0
+   */
+  async create(order: OrderType): Promise<OrderType | undefined> {
+    const user: UserType | undefined = order.user;
+    const products: ProductType[] | undefined = order.products;
 
-  //   try {
-  //     const conn = await client.connect();
-  //     const insertQuery = await (
-  //       await client.query(
-  //         `
-  //           INSERT INTO
-  //             orders (quantity, user_id, product_id)
-  //           VALUES
-  //             ($1, $2, $3)
-  //           RETURNING *;
-  //         `,
-  //         [quantity, user_id, product_id]
-  //       )
-  //     ).rows[0];
+    try {
+      const conn = await client.connect();
+      const orderQuery = await conn.query(
+        `
+          INSERT INTO
+            orders (user_id)
+          VALUES
+            ($1)
+          RETURNING *;
+        `,
+        [user!.id]
+      );
 
-  //     const result: OrderType | undefined = await this.find(insertQuery.id);
-  //     conn.release();
-  //     return result;
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
+      for (const product of order.products!) {
+        await conn.query(
+          `
+            INSERT INTO 
+              order_product (quantity, product_id, order_id)
+            VALUES
+              ($1, $2, $3);
+          `,
+          [product.order_quantity, product.id, orderQuery.rows[0].id]
+        );
+      }
 
-  // /**
-  //  *
-  //  * Update an existing order row in the table.
-  //  *
-  //  * @param order
-  //  * @returns A promise of ProductType or undefined.
-  //  * @author Pola Eskandar.
-  //  * @version v1.0.0
-  //  * @since v1.0.0
-  //  */
-  // async update(order: SimplifiedOrderType): Promise<OrderType | undefined> {
-  //   try {
-  //     const conn = await client.connect();
-  //     const orderCheck = await (await client.query("SELECT * FROM orders WHERE id = $1;", [order.id])).rowCount;
-  //     if (!orderCheck) throw new Error("Order not found");
+      conn.release();
+      const result: OrderType | undefined = await this.find(orderQuery.rows[0].id);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
 
-  //     const updateQuery = await (
-  //       await client.query(
-  //         `
-  //           UPDATE
-  //             orders
-  //           SET
-  //             quantity = $1,
-  //             user_id = $2,
-  //             product_id = $3
-  //           WHERE id = $4
-  //           RETURNING *;
-  //         `,
-  //         [order.quantity, order.user_id, order.product_id, order.id]
-  //       )
-  //     ).rows[0];
+  /**
+   *
+   * Update an existing order row in the table.
+   *
+   * @param order
+   * @returns A promise of ProductType or undefined.
+   * @author Pola Eskandar.
+   * @version v1.0.0
+   * @since v1.0.0
+   */
+  async update(order: OrderType): Promise<OrderType | undefined> {
+    try {
+      const conn = await client.connect();
+      const orderCheck = await this.find(order.id!);
+      if (!orderCheck) throw new Error("Order not found");
 
-  //     const result: OrderType | undefined = await this.find(updateQuery.id);
-  //     conn.release();
-  //     return result;
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
+      const updateOrderQuery = await conn.query(
+        `
+          UPDATE
+            orders
+          SET
+            user_id = $1
+          WHERE id = $2
+          RETURNING *;
+        `,
+        [order.user?.id, order.id]
+      );
 
-  // /**
-  //  *
-  //  * Delete an existing order row in the table.
-  //  *
-  //  * @param id
-  //  * @returns A promise of UserType or undefined.
-  //  * @author Pola Eskandar.
-  //  * @version v1.0.0
-  //  * @since v1.0.0
-  //  */
-  // async delete(id: string): Promise<void> {
-  //   try {
-  //     const conn = await client.connect();
-  //     const orderCheck = await await (await client.query("SELECT * FROM orders WHERE id = $1;", [id])).rows[0];
-  //     if (!orderCheck) throw new Error("Order not found");
-  //     await client.query("DELETE FROM orders WHERE id = $1;", [id]);
-  //     conn.release();
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // }
+      await conn.query(`DELETE FROM order_product WHERE order_id = $1`, [order.id]);
+
+      for (const product of order.products!) {
+        await conn.query(
+          `
+            INSERT INTO 
+              order_product (quantity, product_id, order_id)
+            VALUES
+              ($1, $2, $3);
+          `,
+          [product.order_quantity, product.id, order.id]
+        );
+      }
+
+      const result: OrderType | undefined = await this.find(updateOrderQuery.rows[0].id);
+      conn.release();
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   *
+   * Delete an existing order in the database.
+   *
+   * @param id
+   * @returns A promise of UserType or undefined.
+   * @author Pola Eskandar.
+   * @version v1.0.0
+   * @since v1.0.0
+   */
+  async delete(id: string): Promise<void> {
+    try {
+      const conn = await client.connect();
+      const orderCheck = await conn.query("SELECT * FROM orders WHERE id = $1;", [id]);
+      if (!orderCheck) throw new Error("Order not found");
+      await conn.query(`DELETE FROM order_product WHERE order_id = $1;`, [id]);
+      await conn.query("DELETE FROM orders WHERE id = $1;", [id]);
+      conn.release();
+    } catch (error) {
+      throw error;
+    }
+  }
 }
 
 export default Order;

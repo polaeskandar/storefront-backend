@@ -37,7 +37,7 @@ export const signin = async (req: Request, res: Response): Promise<void> => {
     res.status(200).send({ user: { name: user!.name, email: user!.email }, token });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Something went wrong! Please try again...");
+    if (error instanceof Error) res.status(500).send(error.message);
   }
 };
 
@@ -64,6 +64,6 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
     res.status(200).send({ user, token });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Something went wrong! Please try again...");
+    if (error instanceof Error) res.status(500).send(error.message);
   }
 };

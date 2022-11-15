@@ -21,7 +21,7 @@ export const getAllProducts = async (_req: Request, res: Response): Promise<void
     res.status(200).send(products);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Something went wrong! please try again...");
+    if (error instanceof Error) res.status(500).send(error.message);
   }
 };
 
@@ -49,7 +49,7 @@ export const getProduct = async (req: Request, res: Response): Promise<void> => 
     res.status(200).send(product);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Something went wrong! please try again...");
+    if (error instanceof Error) res.status(500).send(error.message);
   }
 };
 
@@ -79,7 +79,7 @@ export const createProduct = async (req: Request, res: Response): Promise<void> 
     res.status(201).send(product);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Something went wrong! please try again...");
+    if (error instanceof Error) res.status(500).send(error.message);
   }
 };
 
@@ -110,7 +110,7 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
     res.status(201).send(product);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Something went wrong! please try again...");
+    if (error instanceof Error) res.status(500).send(error.message);
   }
 };
 
@@ -133,6 +133,6 @@ export const deleteProduct = async (req: Request, res: Response): Promise<void> 
     res.status(200).send("Product deleted successfully!");
   } catch (error) {
     console.error(error);
-    res.status(500).send("Something went wrong! please try again...");
+    if (error instanceof Error) res.status(500).send(error.message);
   }
 };

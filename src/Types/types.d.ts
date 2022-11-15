@@ -17,6 +17,6 @@ export declare type ProductType = {
 export declare type OrderType = {
   id?: string;
   price?: number;
-  user: UserType;
+  user: UserType | undefined;
   products: ProductType[] | undefined;
 };

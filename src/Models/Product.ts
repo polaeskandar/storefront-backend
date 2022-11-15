@@ -35,7 +35,7 @@ class Product {
   async find(id: string): Promise<ProductType | undefined> {
     try {
       const conn = await client.connect();
-      const result = await (await client.query("SELECT name, description FROM products WHERE id = $1;", [id])).rows[0];
+      const result = await (await client.query("SELECT * FROM products WHERE id = $1;", [id])).rows[0];
       conn.release();
       return result;
     } catch (error) {
