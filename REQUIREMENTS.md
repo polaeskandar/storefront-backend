@@ -9,22 +9,25 @@
   - products
     - id INT
     - name VARCHAR(100)
+    - price INT
     - description TEXT
-    - available_quantity INT
-  - orders -- Many To Many Relationship pivot table
+  - orders
+    - id INT
+    - user_id INT
+  - order_product (Many to many pivot table)
     - id INT
     - quantity INT
-    - user_id INT
     - product_id INT
+    - order_id INT
 
 ---
 
 ## Endpoints
 
-- `POST /user/signin`
-  - Signs a user in.
 - `POST /user/signup`
   - Signs a new user up.
+- `POST /user/signin`
+  - Signs a user in.
 - `GET /users`
   - Gets all users registered in the database.
   - Must be authenticated in order to complete this action.

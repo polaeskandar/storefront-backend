@@ -1,0 +1,690 @@
+{
+	"info": {
+		"_postman_id": "79b13c73-ee72-4d28-9455-749ce1a88acf",
+		"name": "Storefront Backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13610187"
+	},
+	"item": [
+		{
+			"name": "Get all users",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlBvbGEgRXNrYW5kYXIiLCJlbWFpbCI6InBvbGFlQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJHpjb0lyMXg4N2VYcWx1OFhrUnJ1bi44RnJZc1FVdmhqeTRoRG0zOXlldGY1REFLVUtWZVBtIiwiaWF0IjoxNjY4NDUxMjM0fQ.vbsaKRaIWFaWHtAW3oDNLSPrL5WizWxAb_4meKlvWn0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show a User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9sYSBFc2thbmRhciIsImVtYWlsIjoicG9sYUBnbWFpbC5jb20iLCJpYXQiOjE2NjgyNTM5OTN9.5U5GAnmjJ9o67U76pYPcT6ERi_zkRScTAx_vyna2DU4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/user/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9sYSBFc2thbmRhciIsImVtYWlsIjoicG9sYUBnbWFpbC5jb20iLCJpYXQiOjE2NjgyNTM5OTN9.5U5GAnmjJ9o67U76pYPcT6ERi_zkRScTAx_vyna2DU4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Pola Eskandar",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "pola2@test.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/user/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"user",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9sYSBFc2thbmRhciIsImVtYWlsIjoicG9sYUBnbWFpbC5jb20iLCJpYXQiOjE2NjgyNTM5OTN9.5U5GAnmjJ9o67U76pYPcT6ERi_zkRScTAx_vyna2DU4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Updated name",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "updatedagain@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "updatedpass1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/user/2/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"user",
+						"2",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9sYSBFc2thbmRhciIsImVtYWlsIjoicG9sYTNAZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkU3ViSWtaTjNtc291aTFJcWJFa1BsLi9yMjcuWG1vT3NFMzdGcXRRWkZ2ZGdTQW85N09JR20iLCJpYXQiOjE2NjgyNDc0Mjh9.OGY7rP2H4O38PrUUT7fATcjuspuHHJ8JPgsVLcLTroA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/user/2/delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"user",
+						"2",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signin user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "pola2@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/user/signin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"user",
+						"signin"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signup User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Pola Eskandar",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "pola2@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/user/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"user",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Products",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9sYSBFc2thbmRhciIsImVtYWlsIjoicG9sYUBnbWFpbC5jb20iLCJpYXQiOjE2NjgyNTM5OTN9.5U5GAnmjJ9o67U76pYPcT6ERi_zkRScTAx_vyna2DU4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show a Product",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9sYSBFc2thbmRhciIsImVtYWlsIjoicG9sYUBnbWFpbC5jb20iLCJpYXQiOjE2NjgyNTM5OTN9.5U5GAnmjJ9o67U76pYPcT6ERi_zkRScTAx_vyna2DU4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/product/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"product",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create a Product",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9sYSBFc2thbmRhciIsImVtYWlsIjoicG9sYUBnbWFpbC5jb20iLCJpYXQiOjE2NjgyNTM5OTN9.5U5GAnmjJ9o67U76pYPcT6ERi_zkRScTAx_vyna2DU4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Testing product",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "testing product",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "200",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/product/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"product",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a Product",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9sYSBFc2thbmRhciIsImVtYWlsIjoicG9sYUBnbWFpbC5jb20iLCJpYXQiOjE2NjgyNTM5OTN9.5U5GAnmjJ9o67U76pYPcT6ERi_zkRScTAx_vyna2DU4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Testing product updated",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "testing product updated",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "100",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/product/12/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"product",
+						"12",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a Product",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9sYSBFc2thbmRhciIsImVtYWlsIjoicG9sYUBnbWFpbC5jb20iLCJpYXQiOjE2NjgyNTM5OTN9.5U5GAnmjJ9o67U76pYPcT6ERi_zkRScTAx_vyna2DU4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/product/12/delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"product",
+						"12",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create an Order",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9sYSBFc2thbmRhciIsImVtYWlsIjoicG9sYUBnbWFpbC5jb20iLCJpYXQiOjE2NjgyNTM5OTN9.5U5GAnmjJ9o67U76pYPcT6ERi_zkRScTAx_vyna2DU4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "user_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "products_ids[0]",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "products_ids[1]",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "products_quantities[0]",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "products_quantities[1]",
+							"value": "10",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/order/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"order",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Orders",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9sYSBFc2thbmRhciIsImVtYWlsIjoicG9sYUBnbWFpbC5jb20iLCJpYXQiOjE2NjgyNTM5OTN9.5U5GAnmjJ9o67U76pYPcT6ERi_zkRScTAx_vyna2DU4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "http://localhost:5000/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Show an Order",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9sYSBFc2thbmRhciIsImVtYWlsIjoicG9sYUBnbWFpbC5jb20iLCJpYXQiOjE2NjgyNTM5OTN9.5U5GAnmjJ9o67U76pYPcT6ERi_zkRScTAx_vyna2DU4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/order/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"order",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update an Order",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9sYSBFc2thbmRhciIsImVtYWlsIjoicG9sYUBnbWFpbC5jb20iLCJpYXQiOjE2NjgyNTM5OTN9.5U5GAnmjJ9o67U76pYPcT6ERi_zkRScTAx_vyna2DU4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "user_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "order_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "products_ids[0]",
+							"value": "4",
+							"type": "text"
+						},
+						{
+							"key": "products_ids[1]",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "products_quantities[0]",
+							"value": "30",
+							"type": "text"
+						},
+						{
+							"key": "products_quantities[1]",
+							"value": "30",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/order/2/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"order",
+						"2",
+						"update"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete an Order",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9sYSBFc2thbmRhciIsImVtYWlsIjoicG9sYUBnbWFpbC5jb20iLCJpYXQiOjE2NjgyNTM5OTN9.5U5GAnmjJ9o67U76pYPcT6ERi_zkRScTAx_vyna2DU4",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/order/2/delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"order",
+						"2",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

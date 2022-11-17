@@ -15,7 +15,10 @@ const productModel: Product = new Product();
  * @version v1.0.0
  * @since v1.0.0
  */
-export const getAllProducts = async (_req: Request, res: Response): Promise<void> => {
+export const getAllProducts = async (
+  _req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const products: ProductType[] | undefined = await productModel.all();
     res.status(200).send(products);
@@ -36,7 +39,10 @@ export const getAllProducts = async (_req: Request, res: Response): Promise<void
  * @version v1.0.0
  * @since v1.0.0
  */
-export const getProduct = async (req: Request, res: Response): Promise<void> => {
+export const getProduct = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const id: string | undefined = req.params.id;
 
   if (typeof id === "undefined") {
@@ -64,10 +70,14 @@ export const getProduct = async (req: Request, res: Response): Promise<void> => 
  * @version v1.0.0
  * @since v1.0.0
  */
-export const createProduct = async (req: Request, res: Response): Promise<void> => {
+export const createProduct = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const body = req.body;
   const name: string | undefined = body.name;
   const description: string | undefined = body.description;
+  const price: number | undefined = body.price;
 
   if (typeof name === "undefined" || typeof description === "undefined") {
     res.status(400).send("Please provide full credentials.");
@@ -75,7 +85,11 @@ export const createProduct = async (req: Request, res: Response): Promise<void> 
   }
 
   try {
-    const product: ProductType | undefined = await productModel.create({ name, description });
+    const product: ProductType | undefined = await productModel.create({
+      name,
+      description,
+      price,
+    });
     res.status(201).send(product);
   } catch (error) {
     console.error(error);
@@ -94,11 +108,15 @@ export const createProduct = async (req: Request, res: Response): Promise<void> 
  * @version v1.0.0
  * @since v1.0.0
  */
-export const updateProduct = async (req: Request, res: Response): Promise<void> => {
+export const updateProduct = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const body = req.body;
   const id: string | undefined = req.params.id;
   const name: string | undefined = body.name;
   const description: string | undefined = body.description;
+  const price: number | undefined = body.price;
 
   if (typeof name === "undefined" || typeof description === "undefined") {
     res.status(400).send("Please provide full credentials.");
@@ -106,7 +124,12 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
   }
 
   try {
-    const product: ProductType | undefined = await productModel.update({ id, name, description });
+    const product: ProductType | undefined = await productModel.update({
+      id,
+      name,
+      description,
+      price,
+    });
     res.status(201).send(product);
   } catch (error) {
     console.error(error);
@@ -125,7 +148,10 @@ export const updateProduct = async (req: Request, res: Response): Promise<void> 
  * @version v1.0.0
  * @since v1.0.0
  */
-export const deleteProduct = async (req: Request, res: Response): Promise<void> => {
+export const deleteProduct = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const id: string | undefined = req.params.id;
 
   try {

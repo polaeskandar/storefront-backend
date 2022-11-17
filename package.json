@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && db-migrate up --config database.json --env prod && node ./dist/server.js",
-    "test": "tsc && db-migrate up --config database.json --env test && jasmine && db-migrate reset --config database.json --env test",
+    "start": "tsc && db-migrate up -e prod && node ./dist/server.js",
+    "test": "tsc && db-migrate up -e test && jasmine && db-migrate reset -e test",
     "dev": "nodemon ./src/server.ts",
-    "up": "db-migrate up --config database.json",
-    "down": "db-migrate reset --config database.json"
+    "up": "db-migrate up",
+    "down": "db-migrate reset"
   },
   "author": "Pola Eskandar",
   "license": "ISC",
@@ -37,6 +37,6 @@
     "pg-pool": "^3.5.2"
   },
   "prettier": {
-    "printWidth": 300
+    "printWidth": 80
   }
 }

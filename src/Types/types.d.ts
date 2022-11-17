@@ -1,21 +1,21 @@
 export declare type UserType = {
-  id?: string;
+  id?: string | number;
   name?: string;
   email?: string;
   password?: string;
 };
 
 export declare type ProductType = {
-  id?: string;
+  id?: string | number;
   name?: string;
   description?: string;
-  price_per_unit?: number;
-  order_quantity?: string;
+  price?: number;
+  order_quantity?: number;
   total_price?: number;
 };
 
 export declare type OrderType = {
-  id?: string;
+  id?: string | number;
   price?: number;
   user: UserType | undefined;
   products: ProductType[] | undefined;

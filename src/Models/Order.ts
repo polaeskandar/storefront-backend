@@ -29,12 +29,17 @@ class Order {
       );
 
       for (let i = 0; i < orders.rowCount; i++) {
-        const products: ProductType[] | undefined = await this.getProductsForOrder(orders.rows[i].order_id);
+        const products: ProductType[] | undefined =
+          await this.getProductsForOrder(orders.rows[i].order_id);
 
         const order: OrderType = {
           id: orders.rows[i].order_id,
           price: this.calculateTotalPriceOfOrder(products!),
-          user: { id: orders.rows[i].user_id, name: orders.rows[i].user_name, email: orders.rows[i].user_email },
+          user: {
+            id: orders.rows[i].user_id,
+            name: orders.rows[i].user_name,
+            email: orders.rows[i].user_email,
+          },
           products,
         };
 
@@ -58,7 +63,9 @@ class Order {
    * @version v1.0.0
    * @since v1.0.0
    */
-  async getProductsForOrder(orderId: string): Promise<ProductType[] | undefined> {
+  async getProductsForOrder(
+    orderId: string | number
+  ): Promise<ProductType[] | undefined> {
     const products: ProductType[] = [];
 
     try {
@@ -85,9 +92,11 @@ class Order {
           id: orderProducts.rows[j].product_id,
           name: orderProducts.rows[j].product_name,
           description: orderProducts.rows[j].product_description,
-          price_per_unit: orderProducts.rows[j].product_price,
+          price: orderProducts.rows[j].product_price,
           order_quantity: orderProducts.rows[j].quantity,
-          total_price: orderProducts.rows[j].product_price * orderProducts.rows[j].quantity,
+          total_price:
+            orderProducts.rows[j].product_price *
+            orderProducts.rows[j].quantity,
         });
       }
 
@@ -124,7 +133,7 @@ class Order {
    * @version v1.0.0
    * @since v1.0.0
    */
-  async find(id: string | undefined): Promise<OrderType | undefined> {
+  async find(id: string | number): Promise<OrderType | undefined> {
     try {
       const conn = await client.connect();
 
@@ -143,16 +152,19 @@ class Order {
         [id]
       );
 
-      if (!orderQuery.rowCount) {
-        throw new Error("Order not found!");
-      }
+      if (!orderQuery.rowCount) return;
 
-      const products: ProductType[] | undefined = await this.getProductsForOrder(orderQuery.rows[0].order_id);
+      const products: ProductType[] | undefined =
+        await this.getProductsForOrder(orderQuery.rows[0].order_id);
 
       const order: OrderType = {
         id: orderQuery.rows[0].order_id,
         price: this.calculateTotalPriceOfOrder(products!),
-        user: { id: orderQuery.rows[0].user_id, name: orderQuery.rows[0].user_name, email: orderQuery.rows[0].user_email },
+        user: {
+          id: orderQuery.rows[0].user_id,
+          name: orderQuery.rows[0].user_name,
+          email: orderQuery.rows[0].user_email,
+        },
         products,
       };
 
@@ -203,7 +215,9 @@ class Order {
       }
 
       conn.release();
-      const result: OrderType | undefined = await this.find(orderQuery.rows[0].id);
+      const result: OrderType | undefined = await this.find(
+        orderQuery.rows[0].id
+      );
       return result;
     } catch (error) {
       throw error;
@@ -238,7 +252,9 @@ class Order {
         [order.user?.id, order.id]
       );
 
-      await conn.query(`DELETE FROM order_product WHERE order_id = $1`, [order.id]);
+      await conn.query(`DELETE FROM order_product WHERE order_id = $1`, [
+        order.id,
+      ]);
 
       for (const product of order.products!) {
         await conn.query(
@@ -252,7 +268,9 @@ class Order {
         );
       }
 
-      const result: OrderType | undefined = await this.find(updateOrderQuery.rows[0].id);
+      const result: OrderType | undefined = await this.find(
+        updateOrderQuery.rows[0].id
+      );
       conn.release();
       return result;
     } catch (error) {
@@ -270,10 +288,13 @@ class Order {
    * @version v1.0.0
    * @since v1.0.0
    */
-  async delete(id: string): Promise<void> {
+  async delete(id: string | number): Promise<void> {
     try {
       const conn = await client.connect();
-      const orderCheck = await conn.query("SELECT * FROM orders WHERE id = $1;", [id]);
+      const orderCheck = await conn.query(
+        "SELECT * FROM orders WHERE id = $1;",
+        [id]
+      );
       if (!orderCheck) throw new Error("Order not found");
       await conn.query(`DELETE FROM order_product WHERE order_id = $1;`, [id]);
       await conn.query("DELETE FROM orders WHERE id = $1;", [id]);

@@ -35,10 +35,12 @@ class User {
    * @version v1.0.0
    * @since v1.0.0
    */
-  async find(id: string): Promise<UserType | undefined> {
+  async find(id: string | number): Promise<UserType | undefined> {
     try {
       const conn = await client.connect();
-      const result = await (await client.query("SELECT * FROM users WHERE id = $1;", [id])).rows[0];
+      const result = await (
+        await client.query("SELECT * FROM users WHERE id = $1;", [id])
+      ).rows[0];
       conn.release();
       return result;
     } catch (error) {
@@ -56,10 +58,14 @@ class User {
    * @version v1.0.0
    * @since v1.0.0
    */
-  async findWithEmail(email: string | undefined): Promise<UserType | undefined> {
+  async findWithEmail(
+    email: string | undefined
+  ): Promise<UserType | undefined> {
     try {
       const conn = await client.connect();
-      const result = await (await client.query("SELECT * FROM users WHERE email = $1;", [email])).rows[0];
+      const result = await (
+        await client.query("SELECT * FROM users WHERE email = $1;", [email])
+      ).rows[0];
       conn.release();
       return result;
     } catch (error) {
@@ -88,7 +94,13 @@ class User {
     try {
       const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
       const conn = await client.connect();
-      const result = await (await client.query("INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *;", [name, email, hashedPassword])).rows[0];
+
+      const result = await (
+        await client.query(
+          "INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *;",
+          [name, email, hashedPassword]
+        )
+      ).rows[0];
       conn.release();
       return result;
     } catch (error) {
@@ -113,7 +125,12 @@ class User {
       if (!userCheck) throw new Error("User not found");
       const password: string | Buffer = user.password!;
       const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-      const result = await (await client.query("UPDATE users SET name = $1, email = $2, password = $3 WHERE id = $4 RETURNING *;", [user.name, user.email, hashedPassword, user.id])).rows[0];
+      const result = await (
+        await client.query(
+          "UPDATE users SET name = $1, email = $2, password = $3 WHERE id = $4 RETURNING *;",
+          [user.name, user.email, hashedPassword, user.id]
+        )
+      ).rows[0];
       conn.release();
       return result;
     } catch (error) {
@@ -131,7 +148,7 @@ class User {
    * @version v1.0.0
    * @since v1.0.0
    */
-  async delete(id: string): Promise<void> {
+  async delete(id: string | number): Promise<void> {
     try {
       const conn = await client.connect();
       const userCheck = await this.find(id);

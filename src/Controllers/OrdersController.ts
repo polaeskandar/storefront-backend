@@ -19,7 +19,10 @@ const productModel: Product = new Product();
  * @version v1.0.0
  * @since v1.0.0
  */
-export const getAllOrders = async (_req: Request, res: Response): Promise<void> => {
+export const getAllOrders = async (
+  _req: Request,
+  res: Response
+): Promise<void> => {
   try {
     const orders: OrderType[] | undefined = await orderModel.all();
     res.status(200).send(orders);
@@ -68,11 +71,14 @@ export const getOrder = async (req: Request, res: Response): Promise<void> => {
  * @version v1.0.0
  * @since v1.0.0
  */
-export const createOrder = async (req: Request, res: Response): Promise<void> => {
+export const createOrder = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const body = req.body;
   const user_id: string | undefined = body.user_id;
   const products_ids: string[] | undefined = body.products_ids;
-  const products_quantities: string[] | undefined = body.products_quantities;
+  const products_quantities: number[] | undefined = body.products_quantities;
 
   if (typeof user_id === "undefined") {
     res.status(400).send("Please provide full credentials.");
@@ -90,12 +96,17 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
     const products: ProductType[] = [];
 
     for (let i = 0; i < products_ids!.length; i++) {
-      const product: ProductType | undefined = await productModel.find(products_ids![i]);
+      const product: ProductType | undefined = await productModel.find(
+        products_ids![i]
+      );
       product!.order_quantity = products_quantities![i];
       products.push(product!);
     }
 
-    const order: OrderType | undefined = await orderModel.create({ user, products });
+    const order: OrderType | undefined = await orderModel.create({
+      user,
+      products,
+    });
     res.status(201).send(order);
   } catch (error) {
     console.error(error);
@@ -114,12 +125,15 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
  * @version v1.0.0
  * @since v1.0.0
  */
-export const updateOrder = async (req: Request, res: Response): Promise<void> => {
+export const updateOrder = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const body = req.body;
   const user_id: string | undefined = body.user_id;
-  const order_id: string | undefined = body.order_id;
+  const order_id: string | number = body.order_id;
   const products_ids: string[] | undefined = body.products_ids;
-  const products_quantities: string[] | undefined = body.products_quantities;
+  const products_quantities: number[] | undefined = body.products_quantities;
 
   if (typeof user_id === "undefined") {
     res.status(400).send("Please provide full credentials.");
@@ -144,12 +158,18 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
     const products: ProductType[] = [];
 
     for (let i = 0; i < products_ids!.length; i++) {
-      const product: ProductType | undefined = await productModel.find(products_ids![i]);
+      const product: ProductType | undefined = await productModel.find(
+        products_ids![i]
+      );
       product!.order_quantity = products_quantities![i];
       products.push(product!);
     }
 
-    const orderUpdated: OrderType | undefined = await orderModel.update({ id: order_id, user, products });
+    const orderUpdated: OrderType | undefined = await orderModel.update({
+      id: order_id,
+      user,
+      products,
+    });
     res.status(201).send(orderUpdated);
   } catch (error: unknown) {
     console.error(error);
@@ -168,7 +188,10 @@ export const updateOrder = async (req: Request, res: Response): Promise<void> =>
  * @version v1.0.0
  * @since v1.0.0
  */
-export const deleteOrder = async (req: Request, res: Response): Promise<void> => {
+export const deleteOrder = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const id: string | undefined = req.params.id;
 
   try {
