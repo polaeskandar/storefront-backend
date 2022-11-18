@@ -226,6 +226,40 @@ class Order {
 
   /**
    *
+   * Adds a new product to an existing order.
+   *
+   * @param order
+   * @returns A promise of ProductType or undefined.
+   * @author Pola Eskandar.
+   * @version v1.0.0
+   * @since v1.0.0
+   */
+  async addProductToOrder(order: OrderType): Promise<OrderType | undefined> {
+    try {
+      const conn = await client.connect();
+
+      for (const product of order.products!) {
+        await conn.query(
+          `
+            INSERT INTO 
+              order_product (quantity, product_id, order_id)
+            VALUES
+              ($1, $2, $3);
+          `,
+          [product.order_quantity, product.id, order.id]
+        );
+      }
+
+      const result: OrderType | undefined = await this.find(order.id!);
+      conn.release();
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /**
+   *
    * Update an existing order row in the table.
    *
    * @param order

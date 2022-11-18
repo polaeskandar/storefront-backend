@@ -1,6 +1,12 @@
 import { Application } from "express";
 import verifyToken from "../Middlewares/VerifyToken";
-import { getAllUsers, createUser, updateUser, deleteUser, getUser } from "../Controllers/UserController";
+import {
+  getAllUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+  getUser,
+} from "../Controllers/UserController";
 
 const UserHandler = (server: Application) => {
   server.get("/users", verifyToken, getAllUsers);

@@ -14,5 +14,15 @@ UserHandler(server);
 ProductsHandler(server);
 OrdersHandler(server);
 
-server.get("/", (_req, res) => res.status(200).send({ msg: "Welcome to the store. please use REQUIREMENTS.md in the root directory for the full guide on using the endpoints." }));
-server.listen(APP_PORT, () => console.log(`SERVER RUNNING ON http://localhost:${APP_PORT}/`));
+server.get("/", (_req, res) =>
+  res
+    .status(200)
+    .send({
+      msg: "Welcome to the store. please use REQUIREMENTS.md in the root directory for the full guide on using the endpoints.",
+    })
+);
+server.listen(APP_PORT, () =>
+  console.log(`SERVER RUNNING ON http://localhost:${APP_PORT}/`)
+);
+
+export default server;

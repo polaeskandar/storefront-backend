@@ -8,9 +8,11 @@ made by [polaeskandar](https://github.com/polaeskandar)
 
 1. Rename `.env.example` in the root dir to `.env`.
 2. Set the `ENV` variable to `dev` or `prod`.
-3. Set values for the environment variables in the `.env` file. Feel free to use your own port...
-4. Run `npm install` to install the required dependencies.
-5. Run `npm run start` to run the project.
+3. Set values for the environment variables in the `.env` file.
+4. Use port `5000` for the server backend to run. Or use any other port.
+5. Use port `5432` for both databases to run. Or use any other port.
+6. Run `npm install` to install the required dependencies.
+7. Run `npm run start` to run the project.
 
 > Please use postman desktop client to test the endpoints.
 > Please refer to REQUIREMENTS.md for more info.

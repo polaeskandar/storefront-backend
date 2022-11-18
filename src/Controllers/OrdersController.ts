@@ -116,6 +116,70 @@ export const createOrder = async (
 
 /**
  *
+ * Adds a new product to an existing order.
+ *
+ * @param req - The request object.
+ * @param res - The response object.
+ * @returns A promise of void.
+ * @author Pola Eskandar.
+ * @version v1.0.0
+ * @since v1.0.0
+ */
+export const addProductToOrder = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  const body = req.body;
+  const order_id: string | number = req.params.id;
+  const user_id: string | number = body.user_id;
+  const product_id: string | number = body.product_id;
+  const product_quantity: number | undefined = body.quantity;
+
+  try {
+    const user: UserType | undefined = await userModel.find(user_id);
+
+    if (typeof user === "undefined") {
+      res.status(400).send("User is not found!");
+      return;
+    }
+
+    const foundOrder: OrderType | undefined = await orderModel.find(order_id);
+
+    if (typeof foundOrder === "undefined") {
+      res.status(400).send("Order is not found!");
+      return;
+    }
+
+    const product: ProductType | undefined = await productModel.find(
+      product_id
+    );
+
+    if (typeof product === "undefined") {
+      res.status(400).send("Product is not found!");
+      return;
+    }
+
+    product.order_quantity = product_quantity;
+
+    console.log(product);
+
+    const order: OrderType | undefined = await orderModel.addProductToOrder({
+      id: order_id,
+      user,
+      products: [product],
+    });
+
+    console.log(order);
+
+    res.status(201).send(order);
+  } catch (error) {
+    console.error(error);
+    if (error instanceof Error) res.status(500).send(error.message);
+  }
+};
+
+/**
+ *
  * Updates an existing order in the database.
  *
  * @param req - The request object.

@@ -1,4 +1,6 @@
+import supertest from "supertest";
 import bcrypt from "bcrypt";
+import serverApp from "../server";
 import User from "../Models/User";
 import Product from "../Models/Product";
 import Order from "../Models/Order";
@@ -7,6 +9,7 @@ import { ProductType } from "../Types/types";
 const userModel: User = new User();
 const productModel: Product = new Product();
 const orderModel: Order = new Order();
+const server = supertest(serverApp);
 
 describe("Models Tests", () => {
   it("User model should have a create method", async () => {
@@ -441,6 +444,160 @@ describe("Product Tests", () => {
         await orderModel.delete("1");
         const order = await orderModel.find(1);
         expect(order).toBeUndefined();
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  });
+
+  describe("Endpoints Tests", () => {
+    it("can test: POST /user/signup", async () => {
+      try {
+        const response = await server.post("/user/signup").send({
+          name: "Supertest Testing",
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        expect(response.status).toBe(201);
+        expect(response.body.user.name).toBe("Supertest Testing");
+        expect(response.body.user.email).toBe("testing@supertest.com");
+
+        const comparePassword = await bcrypt.compare(
+          "testing123",
+          response.body.user.password
+        );
+
+        expect(comparePassword).toBeTrue();
+        expect(response.body.token).toBeDefined();
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: POST /user/signin", async () => {
+      try {
+        const response = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        expect(response.status).toBe(200);
+        expect(response.body.user.email).toBe("testing@supertest.com");
+        expect(response.body.token).toBeDefined();
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: GET /users", async () => {
+      try {
+        const user = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        const response = await server
+          .get("/users")
+          .set("Authorization", `Bearer ${user.body.token}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body.length).toEqual(3);
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: GET /user/:id", async () => {
+      try {
+        const user = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        const response = await server
+          .get("/user/4")
+          .set("Authorization", `Bearer ${user.body.token}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body.id).toBe(4);
+        expect(response.body.name).toBe("Supertest Testing");
+        expect(response.body.email).toBe("testing@supertest.com");
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: POST /user/create", async () => {
+      try {
+        const user = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        const response = await server
+          .post("/user/create")
+          .set("Authorization", `Bearer ${user.body.token}`)
+          .send({
+            name: "Supertest Testing 2",
+            email: "testing2@supertest.com",
+            password: "testing123",
+          });
+
+        expect(response.status).toBe(201);
+        expect(response.body.id).toBe(5);
+        expect(response.body.name).toBe("Supertest Testing 2");
+        expect(response.body.email).toBe("testing2@supertest.com");
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: UPDATE /user/:id/update", async () => {
+      try {
+        const user = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        const response = await server
+          .put("/user/5/update")
+          .set("Authorization", `Bearer ${user.body.token}`)
+          .send({
+            name: "Updated Supertest Testing 2",
+            email: "updatedtesting2@supertest.com",
+            password: "testing123",
+          });
+
+        expect(response.status).toBe(201);
+        expect(response.body.id).toBe(5);
+        expect(response.body.name).toBe("Updated Supertest Testing 2");
+        expect(response.body.email).toBe("updatedtesting2@supertest.com");
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: DELETE /user/:id/delete", async () => {
+      try {
+        const user = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        const response = await server
+          .delete("/user/5/delete")
+          .set("Authorization", `Bearer ${user.body.token}`);
+
+        expect(response.status).toBe(200);
+
+        const checkUser = await server
+          .get("/user/5")
+          .set("Authorization", `Bearer ${user.body.token}`);
+
+        expect(checkUser.body.id).toBeUndefined();
+        expect(checkUser.body.name).toBeUndefined();
+        expect(checkUser.body.email).toBeUndefined();
       } catch (error) {
         console.error(error);
       }

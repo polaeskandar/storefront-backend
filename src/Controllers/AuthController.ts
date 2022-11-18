@@ -34,7 +34,9 @@ export const signin = async (req: Request, res: Response): Promise<void> => {
 
     const token = jsonwebtoken.sign(user!, APP_SECRET as Secret);
 
-    res.status(200).send({ user: { name: user!.name, email: user!.email }, token });
+    res
+      .status(200)
+      .send({ user: { name: user!.name, email: user!.email }, token });
   } catch (error) {
     console.error(error);
     if (error instanceof Error) res.status(500).send(error.message);
@@ -59,9 +61,13 @@ export const signup = async (req: Request, res: Response): Promise<void> => {
   const password: string | undefined = body.password;
 
   try {
-    const user: UserType | undefined = await userModel.create({ name, email, password });
+    const user: UserType | undefined = await userModel.create({
+      name,
+      email,
+      password,
+    });
     const token = jsonwebtoken.sign(user!, APP_SECRET as Secret);
-    res.status(200).send({ user, token });
+    res.status(201).send({ user, token });
   } catch (error) {
     console.error(error);
     if (error instanceof Error) res.status(500).send(error.message);
