@@ -553,7 +553,7 @@ describe("Product Tests", () => {
       }
     });
 
-    it("can test: UPDATE /user/:id/update", async () => {
+    it("can test: PUT /user/:id/update", async () => {
       try {
         const user = await server.post("/user/signin").send({
           email: "testing@supertest.com",
@@ -598,6 +598,411 @@ describe("Product Tests", () => {
         expect(checkUser.body.id).toBeUndefined();
         expect(checkUser.body.name).toBeUndefined();
         expect(checkUser.body.email).toBeUndefined();
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: GET /products", async () => {
+      try {
+        const user = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        const response = await server
+          .get("/products")
+          .set("Authorization", `Bearer ${user.body.token}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body.length).toBe(5);
+        expect(response.body).toEqual([
+          {
+            id: 5,
+            name: "iPhone 14 plus",
+            price: 2000,
+            description: "An iPhone",
+          },
+          { id: 4, name: "Gaming PC", price: 5000, description: "A gaming PC" },
+          { id: 3, name: "Pencil", price: 2, description: "A pencil" },
+          { id: 2, name: "Notebook", price: 20, description: "A notebook" },
+          { id: 1, name: "Macbook Pro", price: 4000, description: "A laptop" },
+        ]);
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: GET /product/:id", async () => {
+      try {
+        const user = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        const response = await server
+          .get("/product/5")
+          .set("Authorization", `Bearer ${user.body.token}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({
+          id: 5,
+          name: "iPhone 14 plus",
+          price: 2000,
+          description: "An iPhone",
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: POST /product/create", async () => {
+      try {
+        const user = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        const response = await server
+          .post("/product/create")
+          .set("Authorization", `Bearer ${user.body.token}`)
+          .send({
+            name: "Testing product",
+            price: 1000,
+            description: "A testing product.",
+          });
+
+        expect(response.status).toBe(201);
+        expect(response.body).toEqual({
+          id: 7,
+          name: "Testing product",
+          price: 1000,
+          description: "A testing product.",
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: PUT /product/:id/update", async () => {
+      try {
+        const user = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        const response = await server
+          .put("/product/7/update")
+          .set("Authorization", `Bearer ${user.body.token}`)
+          .send({
+            name: "Updated testing product",
+            price: 2000,
+            description: "An updated testing product.",
+          });
+
+        expect(response.status).toBe(201);
+        expect(response.body).toEqual({
+          id: 7,
+          name: "Updated testing product",
+          price: 2000,
+          description: "An updated testing product.",
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: DELETE /product/:id/delete", async () => {
+      try {
+        const user = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        const response = await server
+          .delete("/product/7/delete")
+          .set("Authorization", `Bearer ${user.body.token}`);
+        expect(response.status).toBe(200);
+
+        const checkProduct = await server
+          .get("/product/7")
+          .set("Authorization", `Bearer ${user.body.token}`);
+
+        expect(checkProduct.body.id).toBeUndefined();
+        expect(checkProduct.body.name).toBeUndefined();
+        expect(checkProduct.body.price).toBeUndefined();
+        expect(checkProduct.body.description).toBeUndefined();
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: POST /order/create", async () => {
+      try {
+        const user = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        const response = await server
+          .post("/order/create")
+          .set("Authorization", `Bearer ${user.body.token}`)
+          .send({
+            user_id: 3,
+            products_ids: [1, 2],
+            products_quantities: [5, 10],
+          });
+
+        expect(response.status).toBe(201);
+        expect(response.body).toEqual({
+          id: 2,
+          price: 20200,
+          user: {
+            id: 3,
+            name: "Pola Adel Eskandar Updated",
+            email: "polaeskandar123.updated@gmail.com",
+          },
+          products: [
+            {
+              id: 1,
+              name: "Macbook Pro",
+              description: "A laptop",
+              price: 4000,
+              order_quantity: 5,
+              total_price: 20000,
+            },
+            {
+              id: 2,
+              name: "Notebook",
+              description: "A notebook",
+              price: 20,
+              order_quantity: 10,
+              total_price: 200,
+            },
+          ],
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: GET /orders", async () => {
+      try {
+        const user = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        const response = await server
+          .get("/orders")
+          .set("Authorization", `Bearer ${user.body.token}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual([
+          {
+            id: 2,
+            price: 20200,
+            user: {
+              id: 3,
+              name: "Pola Adel Eskandar Updated",
+              email: "polaeskandar123.updated@gmail.com",
+            },
+            products: [
+              {
+                id: 1,
+                name: "Macbook Pro",
+                description: "A laptop",
+                price: 4000,
+                order_quantity: 5,
+                total_price: 20000,
+              },
+              {
+                id: 2,
+                name: "Notebook",
+                description: "A notebook",
+                price: 20,
+                order_quantity: 10,
+                total_price: 200,
+              },
+            ],
+          },
+        ]);
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: GET /order/:id", async () => {
+      try {
+        const user = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        const response = await server
+          .get("/order/2")
+          .set("Authorization", `Bearer ${user.body.token}`);
+
+        expect(response.status).toBe(200);
+        expect(response.body).toEqual({
+          id: 2,
+          price: 20200,
+          user: {
+            id: 3,
+            name: "Pola Adel Eskandar Updated",
+            email: "polaeskandar123.updated@gmail.com",
+          },
+          products: [
+            {
+              id: 1,
+              name: "Macbook Pro",
+              description: "A laptop",
+              price: 4000,
+              order_quantity: 5,
+              total_price: 20000,
+            },
+            {
+              id: 2,
+              name: "Notebook",
+              description: "A notebook",
+              price: 20,
+              order_quantity: 10,
+              total_price: 200,
+            },
+          ],
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: POST /order/:id/add-product", async () => {
+      try {
+        const user = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        const response = await server
+          .post("/order/2/add-product")
+          .set("Authorization", `Bearer ${user.body.token}`)
+          .send({
+            user_id: 2,
+            product_id: 3,
+            quantity: 5,
+          });
+
+        expect(response.status).toBe(201);
+        expect(response.body).toEqual({
+          id: 2,
+          price: 20210,
+          user: {
+            id: 3,
+            name: "Pola Adel Eskandar Updated",
+            email: "polaeskandar123.updated@gmail.com",
+          },
+          products: [
+            {
+              id: 1,
+              name: "Macbook Pro",
+              description: "A laptop",
+              price: 4000,
+              order_quantity: 5,
+              total_price: 20000,
+            },
+            {
+              id: 2,
+              name: "Notebook",
+              description: "A notebook",
+              price: 20,
+              order_quantity: 10,
+              total_price: 200,
+            },
+            {
+              id: 3,
+              name: "Pencil",
+              description: "A pencil",
+              price: 2,
+              order_quantity: 5,
+              total_price: 10,
+            },
+          ],
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: PUT /order/:id/update", async () => {
+      try {
+        const user = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        const response = await server
+          .put("/order/2/update")
+          .set("Authorization", `Bearer ${user.body.token}`)
+          .send({
+            user_id: 2,
+            order_id: 2,
+            products_ids: [4, 5],
+            products_quantities: [30, 30],
+          });
+
+        expect(response.status).toBe(201);
+        expect(response.body).toEqual({
+          id: 2,
+          price: 210000,
+          user: {
+            id: 2,
+            name: "Pola Adel Eskandar",
+            email: "polaeskandar123@gmail.com",
+          },
+          products: [
+            {
+              id: 4,
+              name: "Gaming PC",
+              description: "A gaming PC",
+              price: 5000,
+              order_quantity: 30,
+              total_price: 150000,
+            },
+            {
+              id: 5,
+              name: "iPhone 14 plus",
+              description: "An iPhone",
+              price: 2000,
+              order_quantity: 30,
+              total_price: 60000,
+            },
+          ],
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    });
+
+    it("can test: DELETE /order/:id/delete", async () => {
+      try {
+        const user = await server.post("/user/signin").send({
+          email: "testing@supertest.com",
+          password: "testing123",
+        });
+
+        await server
+          .delete("/order/2/delete")
+          .set("Authorization", `Bearer ${user.body.token}`);
+
+        const check = await server
+          .get("/order/2")
+          .set("Authorization", `Bearer ${user.body.token}`);
+
+        expect(check.status).toBe(200);
+        expect(check.body.id).toBeUndefined();
+        expect(check.body.price).toBeUndefined();
+        expect(check.body.user).toBeUndefined();
+        expect(check.body.product).toBeUndefined();
       } catch (error) {
         console.error(error);
       }

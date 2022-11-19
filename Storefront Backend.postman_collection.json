@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "79b13c73-ee72-4d28-9455-749ce1a88acf",
+		"_postman_id": "fb6f29d0-71b5-403a-a229-34d478a3f62a",
 		"name": "Storefront Backend",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "13610187"
@@ -69,14 +69,7 @@
 			"name": "Create User",
 			"request": {
 				"auth": {
-					"type": "bearer",
-					"bearer": [
-						{
-							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiUG9sYSBFc2thbmRhciIsImVtYWlsIjoicG9sYUBnbWFpbC5jb20iLCJpYXQiOjE2NjgyNTM5OTN9.5U5GAnmjJ9o67U76pYPcT6ERi_zkRScTAx_vyna2DU4",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "POST",
 				"header": [],
@@ -90,7 +83,7 @@
 						},
 						{
 							"key": "email",
-							"value": "pola2@test.com",
+							"value": "pola@test.com",
 							"type": "text"
 						},
 						{
@@ -681,6 +674,57 @@
 						"order",
 						"2",
 						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a Product To an Order",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6IlBvbGEgRXNrYW5kYXIiLCJlbWFpbCI6InBvbGFlQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJHpjb0lyMXg4N2VYcWx1OFhrUnJ1bi44RnJZc1FVdmhqeTRoRG0zOXlldGY1REFLVUtWZVBtIiwiaWF0IjoxNjY4NDUxMjM0fQ.vbsaKRaIWFaWHtAW3oDNLSPrL5WizWxAb_4meKlvWn0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "user_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "product_id",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "quantity",
+							"value": "5",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:5000/order/1/add-product",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"order",
+						"1",
+						"add-product"
 					]
 				}
 			},

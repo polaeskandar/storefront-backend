@@ -82,7 +82,7 @@
 - `POST /order/create`
   - Creates a new order in the database.
   - Must be authenticated in order to complete this action.
-- `POST /order/add-product`
+- `POST /order/:id/add-product`
   - Adds a new product to an existing order.
   - Must be authenticated in order to complete this action.
 - `PUT /order/:id/update`

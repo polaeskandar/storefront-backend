@@ -161,15 +161,11 @@ export const addProductToOrder = async (
 
     product.order_quantity = product_quantity;
 
-    console.log(product);
-
     const order: OrderType | undefined = await orderModel.addProductToOrder({
       id: order_id,
       user,
       products: [product],
     });
-
-    console.log(order);
 
     res.status(201).send(order);
   } catch (error) {
